@@ -1,0 +1,13 @@
+# Dependencies
+node_modules
+
+# Build
+.next
+out
+build
+
+# Cache
+.cache
+
+# Lock files
+package-lock.json

@@ -1,0 +1,16 @@
+# .dockerignore
+venv
+node_modules
+.git
+.gitignore
+.env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+client/node_modules
+client/.next
+alembic/versions/__pycache__
+uploads/*
+!uploads/.gitkeep

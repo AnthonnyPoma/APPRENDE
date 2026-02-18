@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #2563eb;
+  --secondary: #1f2937;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* Custom Utilities */
+.btn-primary {
+  @apply bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow;
+}
+
+.btn-secondary {
+  @apply bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-bold hover:bg-gray-50 transition shadow-sm;
+}
+
+.course-card {
+  @apply bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition transform hover:-translate-y-1;
+}
+
+.hero-pattern {
+  @apply bg-white;
+}
+
+html {
+  scroll-behavior: smooth;
+}
