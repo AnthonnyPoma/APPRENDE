@@ -59,3 +59,16 @@ class CourseResponse(BaseModel):
 # 4. Esquema DETALLADO
 class CourseDetailResponse(CourseResponse):
     sections: List[SectionResponse] = []
+
+# 5. Esquemas de REORDER
+class LessonReorder(BaseModel):
+    id: UUID
+    order_index: int
+
+class SectionReorder(BaseModel):
+    id: UUID
+    order_index: int
+    lessons: List[LessonReorder] = []
+
+class CourseReorderRequest(BaseModel):
+    sections: List[SectionReorder]

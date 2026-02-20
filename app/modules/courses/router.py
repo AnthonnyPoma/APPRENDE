@@ -156,7 +156,38 @@ def play_lesson(
         filename = video_url.replace("/media/", "")
         video_url = f"http://localhost:8000/files/stream/{filename}"
 
-    return {
-        "video_url": video_url, 
-        "message": "Disfruta tu clase 🍿"
-    }
+@router.put("/{course_id}/reorder")
+def reorder_course_content(
+    course_id: UUID,
+    reorder_data: schemas.CourseReorderRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    course = db.query(models.Course).filter(models.Course.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=404, detail="Course not found")
+        
+    # Verificar propiedad (o admin)
+    if course.user_id != current_user.id and current_user.role != "ADMIN":
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    # Actualizar orden
+    for section_data in reorder_data.sections:
+        section = db.query(models.Section).filter(
+            models.Section.id == section_data.id, 
+            models.Section.course_id == course_id
+        ).first()
+        
+        if section:
+            section.order_index = section_data.order_index
+            
+            for lesson_data in section_data.lessons:
+                lesson = db.query(models.Lesson).filter(models.Lesson.id == lesson_data.id).first()
+                # Verificar que la lección pertenece a la sección (o permitir moverla)
+                # Al moverla, actualizamos su section_id
+                if lesson:
+                    lesson.section_id = section.id
+                    lesson.order_index = lesson_data.order_index
+    
+    db.commit()
+    return {"message": "Orden actualizado correctamente"}
